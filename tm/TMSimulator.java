@@ -47,6 +47,8 @@ public class TMSimulator{
                 int nextState = Integer.parseInt(parts[0]);
                 int writeChar = parts[1].charAt(0);
                 int moveDirection = parts[2].charAt(0) == 'R' ? 1 : 0;
+
+                tm.addState()
     
             }
         } catch (FileNotFoundException e) {
