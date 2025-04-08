@@ -21,5 +21,9 @@ class TMState {
     public TMState(int state){
         this.state = state;
     }
+
+    public int get_name(){
+        return state;
+    }
 }
 

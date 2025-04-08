@@ -22,6 +22,7 @@ class TM {
      * current State |   Transitions
      * TMState       ->  ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] ) ,
      *                   ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] )
+     * 
      * TMState       ->  ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] ) ,
      *                   ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] )
      */
@@ -33,14 +34,21 @@ class TM {
      * 
      * @constructor
      */
-    public TM(int maxState, int maxSymbols){
-        states = new TMState[maxState];
-        sigma = new TMState[maxSymbols];
+    public TM(int maxState){
         startState = new TMState(0);
         finalState = new TMState(maxState - 1);
+        states = new TMState[maxState];
+
+        // Fill states with id
+        for(int i = 0; i < maxState; i++){
+            states[i] = new TMState(i);
+        }
     }
 
-    private void addState(TMState currenState, TMState nextState, int elementToWrite, int shiftTape){
-        
-    };
+    @Override
+    public String toString(){
+        String output = states + " " + startState;
+
+        return output;
+    }
 }
