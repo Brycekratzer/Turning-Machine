@@ -12,7 +12,7 @@ import tm.TMState;
  */
 class TM {
     private TMState[] states;
-    private TMState[] sigma;
+    private int[] sigma;
     private TMState startState;
     private TMState finalState;
 
@@ -34,7 +34,7 @@ class TM {
      * 
      * @constructor
      */
-    public TM(int maxState){
+    public TM(int maxState, int maxChars){
         startState = new TMState(0);
         finalState = new TMState(maxState - 1);
         states = new TMState[maxState];
@@ -43,6 +43,12 @@ class TM {
         for(int i = 0; i < maxState; i++){
             states[i] = new TMState(i);
         }
+
+        // Fill states with 
+        for(int i = 0; i < maxChars; i++){
+            sigma[i] = i;
+        }
+
     }
 
     @Override
