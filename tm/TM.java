@@ -1,0 +1,46 @@
+package tm;
+import java.util.ArrayList;
+import java.util.Map;
+
+import tm.TMState;
+
+/**
+ * 
+ * @Brycekratzer
+ * 
+ * The TM class represents a working deterministic Turning Machine
+ */
+class TM {
+    private TMState[] states;
+    private TMState[] sigma;
+    private TMState startState;
+    private TMState finalState;
+
+
+    /* Visual of the Data Structure
+     * 
+     * current State |   Transitions
+     * TMState       ->  ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] ) ,
+     *                   ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] )
+     * TMState       ->  ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] ) ,
+     *                   ( nextState -> [element to write ,  int[ element to write , shift Left (0), Right (1) ] )
+     */
+    private Map<TMState, Map<TMState, int[]>> transitions;
+
+
+
+    /**
+     * 
+     * @constructor
+     */
+    public TM(int maxState, int maxSymbols){
+        states = new TMState[maxState];
+        sigma = new TMState[maxSymbols];
+        startState = new TMState(0);
+        finalState = new TMState(maxState - 1);
+    }
+
+    private void addState(TMState currenState, TMState nextState, int elementToWrite, int shiftTape){
+        
+    };
+}

@@ -1,3 +1,8 @@
+package tm;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  * @Brycekratzer
@@ -6,7 +11,6 @@
  */
 class TMState {
     private int state;
-
     /**
      * @constructor 
      * 
@@ -19,18 +23,3 @@ class TMState {
     }
 }
 
-/**
- * 
- * @Brycekratzer
- * 
- * The TM class represents a working deterministic Turning Machine
- */
-class TM {
-
-}
-
-public class TMSimulator{
-    public static void main(String[] args) {
-        
-    }
-}
