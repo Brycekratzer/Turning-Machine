@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
- * @Brycekratzer
- * 
  * The TMState class represents a state inside of a Turning Machine
+ * 
+ * @author brycekratzer
  */
 class TMState {
+
+    // Each state is represented by an integer based ID
     private int state;
+
     /**
      * @constructor 
      * 
@@ -22,8 +24,16 @@ class TMState {
         this.state = state;
     }
 
+    /*
+     * Returns the integer ID
+     */
     public int get_name(){
         return state;
+    }
+
+    @Override
+    public String toString(){
+        return "State: " + state + "\n";
     }
 }
 
