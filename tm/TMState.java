@@ -1,7 +1,5 @@
 package tm;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The TMState class represents a state inside of a Turning Machine
@@ -27,7 +25,7 @@ class TMState {
     /*
      * Returns the integer ID
      */
-    public int get_name(){
+    public int get_State(){
         return state;
     }
 

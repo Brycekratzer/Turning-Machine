@@ -1,71 +1,78 @@
 package tm;
-import tm.TM;
-import tm.TMState;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class TMSimulator{
-    public static void main(String[] args) {
-        String filePath = args[0];
-        TM tm; 
-        int numStates;
-        int numChars;
-
-        /* READING FILE INFO 
-         * 
-         * First line of file is the number of states
-         * Second line is the number of characters
-         * The proceeding lines represent a transition.
-         * There will be n + 1 transitions per state besides the last state, where n is the number of characters.
-         * 
-         * Each state will always have a transition for each character, EXCEPT the last state. 
-         * The LAST STATE DOES NOT have ANY EXITING TRANSITIONS.
-         * 
-         */
-
-        // Initializing the Turning Machine by getting the number of states and characters
-        try(Scanner fileReader = new Scanner(new File(filePath))) {
-
-            /* Grabbing the number of states and number of symbols from the first 2 lines */
-            String line = fileReader.nextLine();
-            numStates = Integer.parseInt(line);
-            line = fileReader.nextLine();
-            numChars = Integer.parseInt(line);
-            tm = new TM(numStates, numChars);
-    
-            /* Variables for properly adding transitions */
-            int lineIndex = 0;
-            int transitionsPerState = numChars + 1;
-
-            /* Looping through every transition based on what line we are reading in the file */
-            while (fileReader.hasNextLine()){
-                String transitionline = fileReader.nextLine();
-    
-                // Get each part from line
-                String[] parts = transitionline.split(",");
-    
-                // Calculate current state and index
-                int currentStateIndex = lineIndex / transitionsPerState;
-
-                // Create a new state to add to the Turning machine based on the index.
-                TMState state = new TMState(currentStateIndex);
-    
-                // Get next state for transition
-                int nextStateID = Integer.parseInt(parts[0]);
-                TMState nextState = new TMState(nextStateID);
-
-                // Get other info needed for transition
-                int writeChar = Integer.parseInt(parts[1]);
-                int moveDirection = parts[2].charAt(0) == 'R' ? 1 : 0;
-
-                lineIndex++;
-
-                // Add transition to our turning machine
-                tm.addTransition(state, nextState, writeChar, moveDirection);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+/**
+ * The TMSimulator class simulates a deterministic Turing Machine
+ * with a bi-infinite tape. It reads transitions and input from a file.
+ * 
+ * @author bryce kratzer
+ * @author tristan jones
+ * @version Spring 2025
+ */
+public class TMSimulator {
+    public static void main(String[] args) throws FileNotFoundException {
+        if (args.length != 1) {
+            System.out.println("Usage: java tm.TMSimulator <input_file>");
+            return;
         }
+
+        // Read input file
+        File file = new File(args[0]);
+        Scanner scanner = new Scanner(file);
+
+        int numStates = scanner.nextInt();
+        int numSymbols = scanner.nextInt();
+        scanner.nextLine(); // move to next line after reading numbers
+
+        TM tm = new TM(numStates, numSymbols);
+
+        int totalTransitions = (numSymbols + 1) * (numStates - 1);
+        for (int i = 0; i < totalTransitions; i++) {
+            String[] parts = scanner.nextLine().trim().split(",");
+            int nextState = Integer.parseInt(parts[0]);
+            int writeSymbol = Integer.parseInt(parts[1]);
+            char direction = parts[2].charAt(0);
+
+            int currentState = i / (numSymbols + 1);
+            int symbol = i % (numSymbols + 1);
+
+            tm.addTransition(currentState, symbol, new TMTransition(nextState, writeSymbol, direction));
+        }
+
+        // Read input string (possibly blank line)
+        String input = scanner.hasNextLine() ? scanner.nextLine().trim() : "";
+        scanner.close();
+
+        // Initialize tape
+        Tape tape = new Tape();
+        for (char ch : input.toCharArray()) {
+            tape.write(Character.getNumericValue(ch));
+            tape.moveRight();
+        }
+
+
+        int currentState = tm.getStartState();
+
+        // Run the machine
+        while (currentState != tm.getHaltingState()) {
+            int currentSymbol = tape.read();
+            TMTransition transition = tm.getTransition(currentState, currentSymbol);
+
+            tape.write(transition.getWriteSymbol());
+
+            if (transition.getDirection() == 'R') {
+                tape.moveRight();
+            } else {
+                tape.moveLeft();
+            }
+
+            currentState = transition.getNextState();
+        }
+
+        // Output result
+        System.out.println(tape.getVisitedTape());
     }
 }
